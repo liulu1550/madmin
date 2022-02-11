@@ -30,8 +30,8 @@ export default {
 
 <style scoped lang="scss">
 .left-nav-container{
-  width: 200px;
   height: 100%;
+  width: 200px;
   position: fixed;
   top: 0;
   left: 0;

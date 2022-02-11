@@ -90,11 +90,16 @@ const router = new VueRouter({
 // 全局路由守卫
 router.beforeEach((to, from, next)=>{
   if (to.path==='/login'){
-    next()
+    if(getToken()){
+      Message.info('您已登录，请先退出登录')
+      router.push({name:'Home'})
+    }else {
+      next()
+    }
   }else {
     if(!getToken()){
       Message.error('对不起，请先登录')
-      router.push('/login')
+      router.push({name:'Login'})
       // next()
     }else {
       next()

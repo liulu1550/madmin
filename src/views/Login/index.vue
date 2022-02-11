@@ -59,8 +59,8 @@ export default {
               this.$message.error('用户名或密码错误')
             }else {
               this.$message.success('欢迎回来~')
-              console.log(res)
               setToken(res.token)
+              this.$router.push({name:'Home'})
             }
           })
         } else {
@@ -80,6 +80,9 @@ export default {
   background-color: #1f2d3d;
   background-image: url("../../assets/login-background.a70ff998.jpg");
   background-repeat: no-repeat;
+  background-size: cover;
+
+
   display: flex;
   flex-direction: row;
   justify-content: center;
