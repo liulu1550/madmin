@@ -31,7 +31,7 @@ const routes = [
         name: "Home",
         meta: {
           keepAlive: true,
-          name: "控制台",
+          title: "控制台",
           icon: 'el-icon-s-grid'
         },
         component: () => import("@/views/Home")
@@ -48,21 +48,32 @@ const routes = [
     },
     children: [
       {
-        path: "/system/dict",
+        path: "/system/dict/type/",
         name: "Dict",
         meta: {
           keepAlive: true,
-          name: "字典管理",
+          title: "字典管理",
           icon: 'el-icon-tickets'
         },
         component: () => import("@/views/system/Dict")
+      },
+      {
+        path: "/system/dict/detail/:dictId(\\d+)",
+        name: "DictDetail",
+        meta: {
+          keepAlive: true,
+          title: "字典数据",
+          icon: 'el-icon-tickets',
+          hidden:true
+        },
+        component: () => import("@/views/system/Dict/detail")
       },
       {
         path: "/system/images",
         name: "Images",
         meta: {
           keepAlive: true,
-          name: "图片管理",
+          title: "图片管理",
           icon: 'el-icon-picture-outline'
         },
         component: () => import("@/views/system/Images")
@@ -72,7 +83,7 @@ const routes = [
         name: "Files",
         meta: {
           keepAlive: true,
-          name: "文件管理",
+          title: "文件管理",
           icon: 'el-icon-folder'
         },
         component: () => import("@/views/system/Files")

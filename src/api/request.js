@@ -32,8 +32,7 @@ service.interceptors.response.use(function (response) {
     // console.log(data)
     if (response.status === 200) {
         if(data.code ===401) {
-            console.log('未登录或登录失效')
-            return data
+            return Promise.reject(response);
         }else if(data.code===2000){
             return data
         }else {

@@ -9,3 +9,7 @@ html {
 *{
   box-sizing: border-box;
 }
+.table-container /deep/ .el-table .el-table__fixed-header-wrapper th,.table-container /deep/ .el-table .el-table__header-wrapper th{
+  background-color: #f8f8f9;
+  color: #515a6e;
+}

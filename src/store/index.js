@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state:{
     layoutConfig:{
-      navIsCollapse:false
+      navIsCollapse:false,
     }
   },
   modules:{

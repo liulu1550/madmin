@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import {Login} from "@/api";
-import {setToken} from "@/utils/storage";
+import {AdminProfile, Login} from "@/api";
+import {setToken, setUser} from "@/utils/storage";
 
 export default {
   name: "Login",
@@ -55,19 +55,27 @@ export default {
         if (valid) {
           Login(this.formData).then(res=>{
             this.loginLoading = false
-            if(res.code===401){
-              this.$message.error('用户名或密码错误')
-            }else {
-              this.$message.success('欢迎回来~')
-              setToken(res.token)
-              this.$router.push({name:'Home'})
-            }
+            this.$message.success('欢迎回来~')
+            setToken(res.token)
+            this.$store.commit('app/SET_TOKEN',res.token)
+            this.getUserInfo()
+          }).catch(err=>{
+            this.loginLoading = false
+            this.$message.error('用户名或密码错误')
           })
         } else {
           this.loginLoading = false
           return false;
         }
       });
+    },
+    // 获取用户信息
+    getUserInfo(){
+      AdminProfile().then(res=>{
+        setUser(JSON.stringify(res.data))
+      }).then(()=>{
+        this.$router.push({name:'Home'})
+      })
     }
   }
 }
