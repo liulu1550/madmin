@@ -99,7 +99,8 @@
             prop="create_datetime"
             label="创建时间"
             header-align="center"
-            align="center">
+            align="center"
+            width="150px">
         </el-table-column>
         <el-table-column
             label="操作"
@@ -124,7 +125,7 @@
       </div>
     </div>
     <div class="add-dialog-container">
-      <el-dialog v-bind="$attrs" v-on="$listeners" :visible="showDialog" @open="onOpen" @close="onClose" :close-on-click-modal="false" :title="dialogTitle">
+      <el-dialog v-bind="$attrs" v-on="$listeners" :visible="showDialog" @open="onOpen" width="500px" @close="onClose" :close-on-click-modal="false" :title="dialogTitle">
         <el-row :gutter="15">
           <el-form ref="AddForm" :model="addFormData" :rules="dialogRules" size="small" label-width="80px">
             <el-col :span="23">

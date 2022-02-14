@@ -61,10 +61,10 @@ const routes = [
         path: "/system/dict/detail/:dictId(\\d+)",
         name: "DictDetail",
         meta: {
-          keepAlive: true,
+          keepAlive: false,
           title: "字典数据",
           icon: 'el-icon-tickets',
-          hidden:true
+          hidden:true,
         },
         component: () => import("@/views/system/Dict/detail")
       },

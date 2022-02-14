@@ -1,37 +1,36 @@
 <template>
-<div class="app-container">
-  <div class="collapse-wrapper">
-    <i class="el-icon-s-fold" @click="changeNavBarStatus"></i>
-    <div class="breadcrumd-container">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item :to="{ path: '/' }">控制台</el-breadcrumb-item>
-        <template v-if="$route.path !== '/'">
-          <template v-for="(item, index) in $route.matched">
-            <el-breadcrumb-item>{{item.meta.title}}</el-breadcrumb-item>
+  <div class="app-container">
+    <div class="collapse-wrapper">
+      <i class="el-icon-s-fold" @click="changeNavBarStatus"></i>
+      <div class="breadcrumd-container">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">控制台</el-breadcrumb-item>
+          <template v-if="$route.path !== '/'">
+            <template v-for="(item, index) in $route.matched">
+              <el-breadcrumb-item>{{item.meta.title}}</el-breadcrumb-item>
+            </template>
           </template>
-        </template>
-      </el-breadcrumb>
+        </el-breadcrumb>
+      </div>
     </div>
-  </div>
-  <div class="right-btn-group">
-    <el-tooltip class="item" effect="dark" content="接口文档" placement="bottom">
-      <i class="el-icon-s-opportunity"></i>
-    </el-tooltip>
-    <div class="avatar-dropdown">
-      <el-dropdown trigger="click" @command="dropDownCommand">
+    <div class="right-btn-group">
+      <el-tooltip class="item" effect="dark" content="接口文档" placement="bottom">
+        <i class="el-icon-s-opportunity"></i>
+      </el-tooltip>
+      <div class="avatar-dropdown">
+        <el-dropdown trigger="click" @command="dropDownCommand">
       <span class="el-dropdown-link">
         <el-avatar shape="circle" size="medium" :src="userinfo.avatar"></el-avatar><i class="el-icon-caret-bottom"></i>
       </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="profile">个人中心</el-dropdown-item>
-          <el-dropdown-item command="setting">布局设置</el-dropdown-item>
-          <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="profile">个人中心</el-dropdown-item>
+            <el-dropdown-item command="setting">布局设置</el-dropdown-item>
+            <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
   </div>
-
-</div>
 </template>
 
 <script>
@@ -69,6 +68,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .app-container{
   display: flex;
   flex-direction: row;
@@ -77,6 +77,7 @@ export default {
   height: 100%;
   width: 100%;
   padding-right: 20px;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
   .collapse-wrapper{
     margin-left: 20px;
     font-size: 20px;
@@ -111,4 +112,5 @@ export default {
   color: #5a5e66;
   font-size: 18px;
 }
+
 </style>

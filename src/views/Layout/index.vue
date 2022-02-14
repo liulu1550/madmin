@@ -8,9 +8,14 @@
   </div>
   <div class="right-container" :style="{'padding-left':leftNavBarWidth}">
    <div class="main">
-     <keep-alive>
+     <template  v-if="$route.meta.keepAlive">
+       <keep-alive>
+         <router-view />
+       </keep-alive>
+     </template>
+     <template v-else>
        <router-view />
-     </keep-alive>
+     </template>
    </div>
   </div>
 </div>

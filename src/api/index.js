@@ -65,3 +65,73 @@ export function GetDictDetailList(params){
         params
     })
 }
+// 删除字典数据
+export function DelDictDetailList(dictId){
+    return service.request({
+        method:'delete',
+        url:`/dict/data/${dictId}/`,
+    })
+}
+// 添加字典数据
+
+export function AddDictDetailList(data){
+    return service.request({
+        method:'post',
+        url:`/dict/data/`,
+        data
+    })
+}
+// 修改字典数据
+export function UpdateDictDetailList(data){
+    return service.request({
+        method:'put',
+        url:`/dict/data/${data.id}/`,
+        data
+    })
+}
+// 获取字典数据
+export function UpdateDictDetailData(dictId){
+    return service.request({
+        method:'get',
+        url:`/dict/data/${dictId}/`,
+    })
+}
+// 获取图片上传token
+export function GetImagesToken(){
+    return service.request({
+        method:'get',
+        url:`/img/token/`,
+    })
+}
+// 图片上传成功后的返回值返回给服务器
+export function ImagesInfo(data){
+    return service.request({
+        method:'post',
+        url:`/img/info/`,
+        data
+    })
+}
+// 获取图片列表
+export function GetImagesList(params){
+    return service.request({
+        method:'get',
+        url:`/images/`,
+        params
+    })
+}
+// 新增图片
+export function AddImages(data){
+    return service.request({
+        method:'post',
+        url:`/images/`,
+        data
+    })
+}
+// 删除图片
+export function DeleteImages(imageId){
+    return service.request({
+        method:'delete',
+        url:`/images/${imageId}`,
+    })
+}
+

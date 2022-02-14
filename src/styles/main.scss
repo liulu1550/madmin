@@ -13,3 +13,9 @@ html {
   background-color: #f8f8f9;
   color: #515a6e;
 }
+
+.line1{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

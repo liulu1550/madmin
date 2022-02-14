@@ -75,7 +75,8 @@ export default {
       if (this.$route.path !== key) {
         this.$router.push(key)
       }
-    }
+    },
+
   }
 }
 </script>

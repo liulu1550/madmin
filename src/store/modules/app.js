@@ -3,7 +3,7 @@ import {getUser} from "@/utils/storage";
 
 const state = {
     token: '',
-    user: getUser() ? JSON.parse(getUser()) : ''
+    user: getUser() ? JSON.parse(getUser()) : '',
 }
 
 const getters = {
