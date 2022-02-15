@@ -16,7 +16,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="时间范围" prop="create_datetime">
+            <el-form-item label="创建时间" prop="create_datetime">
               <el-date-picker type="daterange" v-model="filterForm.create_datetime" format="yyyy-MM-dd HH:mm:ss"
                               value-format="yyyy-MM-dd HH:mm:ss" :style="{width: '100%'}"
                               :default-time="['00:00:00', '23:59:59']" start-placeholder="开始时间"
@@ -65,6 +65,18 @@
           </template>
         </el-table-column>
         <el-table-column
+            header-align="center"
+            align="center"
+            label="缩略图"
+            width="150">
+          <template slot-scope="scope">
+            <el-image
+                style="width: 40px; height: 40px"
+                :src="scope.row.oss_url"
+                ></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column
             prop="type"
             label="图片类型"
             header-align="center"
@@ -77,10 +89,12 @@
             align="center">
         </el-table-column>
         <el-table-column
-            prop="address"
-            label="本地地址"
+            label="文件KEY"
             header-align="center"
             align="center">
+          <template slot-scope="scope">
+            <div class="text line1">{{scope.row.key}}</div>
+          </template>
         </el-table-column>
         <el-table-column
             label="OSS地址"
@@ -136,14 +150,13 @@
           width="30%"
           :close-on-click-modal="false"
           :close-on-press-escape="false"
-          :show-close="false"
-          :before-close="handleClose">
+          :show-close="false">
         <div class="upload-picture-container">
-          <upload-picture />
+          <upload-picture ref="uploadPicture" v-if="forceRefresh" :limit="2" />
+          <span>请上传文件大小不超过2M的图片(当前可上传2张)</span>
         </div>
         <span slot="footer" class="dialog-footer">
-    <el-button size="mini" @click="uploadVisible = false">取 消</el-button>
-    <el-button type="primary" size="mini" @click="uploadVisible = false">确 定</el-button>
+    <el-button type="primary" size="mini" @click="closeUploadDialog">确 定</el-button>
   </span>
       </el-dialog>
     </div>
@@ -181,6 +194,8 @@ export default {
       multiple: true,
       // 上传dialog框
       uploadVisible: false,
+      // 强制刷新上传组件
+      forceRefresh:false,
     }
   },
   mounted() {
@@ -201,7 +216,6 @@ export default {
     },
     /**多选**/
     handleSelectionChange(selection) {
-      console.log(selection)
       this.ids = selection.map((item) => item.id);
       this.multiple = !selection.length > 0;
     },
@@ -217,12 +231,12 @@ export default {
     },
     /**过滤项提交**/
     handleSearch() {
-      if (this.queryParams.create_datetime === undefined || this.queryParams.create_datetime === null) {
+      if (this.filterForm.create_datetime === undefined || this.filterForm.create_datetime === null) {
         this.queryParams['create_datetime_gte'] = ''
         this.queryParams['create_datetime_lte'] = ''
       } else {
-        this.queryParams['create_datetime_gte'] = this.queryParams.create_datetime[0]
-        this.queryParams['create_datetime_lte'] = this.queryParams.create_datetime[1]
+        this.queryParams['create_datetime_gte'] = this.filterForm.create_datetime[0]
+        this.queryParams['create_datetime_lte'] = this.filterForm.create_datetime[1]
       }
       this.queryParams.name = this.filterForm.name
       this.queryParams.type = this.filterForm.type
@@ -234,12 +248,19 @@ export default {
       this.$refs['filterForm'].resetFields()
     },
     /**关闭上传dialog之前**/
-    handleClose(){
+    closeUploadDialog(){
+      this.uploadVisible = false
+      this.forceRefresh = false
+      this.$refs.uploadPicture.clearUploadList()
       this.getImagesList()
     },
     /**点击上传按钮**/
     showUploadDialog(){
-      this.uploadVisible = true
+      this.$nextTick(()=>{
+        this.forceRefresh = true
+        this.uploadVisible = true
+      })
+
     },
     /**点击批量删除按钮**/
     handleDelete(row){
@@ -285,8 +306,11 @@ export default {
 }
 .upload-picture-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  span{
+    margin-top: 10px;
+  }
 }
 </style>

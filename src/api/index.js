@@ -134,4 +134,52 @@ export function DeleteImages(imageId){
         url:`/images/${imageId}`,
     })
 }
+// 图片详情
+export function DetailImages(imageId){
+    return service.request({
+        method:'get',
+        url:`/images/${imageId}`,
+    })
+}
 
+
+// 软件分类列表
+export function ListSoftCategory(params){
+    return service.request({
+        method:'get',
+        url:`/soft/category`,
+        params
+    })
+}
+// 删除软件分类
+export function DeleteSoftCategory(cId){
+    return service.request({
+        method:'delete',
+        url:`/soft/category/${cId}/`,
+    })
+}
+// 新增软件分类
+export function AddSoftCategory(data){
+    return service.request({
+        method:'post',
+        url:`/soft/category/`,
+        data
+    })
+}
+// 修改软件分类
+export function UpdateSoftCategory(data){
+    return service.request({
+        method:'put',
+        url:`/soft/category/${data.id}/`,
+        data
+    })
+}
+
+// 文件列表
+export function ListFiles(params){
+    return service.request({
+        method:'get',
+        url:`/files/`,
+        params
+    })
+}

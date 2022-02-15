@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-upload
+        class="image-upload"
         ref="imgUpload"
         :action="uploadAction"
         list-type="picture-card"
@@ -9,9 +10,10 @@
         :on-success="handleSuccess"
         :on-change="handleChange"
         :before-upload="handleBeforeUpload"
-        accept=".jpg, .png, .gif"
+        accept="image/*"
         :auto-upload="false"
         :data="uploadData"
+        :class="{hide:hideUpload}"
         :limit="limit">
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -22,7 +24,7 @@
 </template>
 
 <script>
-import {AddImages, GetImagesToken, ImagesInfo} from "@/api";
+import {AddImages, DeleteImages, GetImagesList, GetImagesToken, ImagesInfo} from "@/api";
 
 export default {
   name: "uploadPicture",
@@ -50,7 +52,9 @@ export default {
         address:'',
         md5:'',
         oss_url:'',
-      }
+      },
+      // 隐藏上传按钮
+      hideUpload:false,
     }
   },
   methods: {
@@ -59,6 +63,13 @@ export default {
     },
     /** 文件列表移除文件时的钩子 **/
     handleRemove(file, fileList) {
+      GetImagesList({'key':file.response.key}).then(res=>{
+        const imageId = res.data.results[0].id
+        DeleteImages(imageId).then(res=>{
+        })
+      })
+      // 显示上传按钮
+      this.hideUpload = fileList.length >= this.limit
     },
     /** 文件上传成功时的钩子 **/
     handleSuccess(file, fileList) {
@@ -67,6 +78,7 @@ export default {
         this.imageData.md5 =res.data.info.md5
         this.imageData.size = res.data.info.fsize
         this.imageData.type = res.data.info.mimeType
+        this.imageData.key = file.key
         this.imageData.oss_url = 'https://ossimg.wouldmissyou.com/'+file.key
       }).then(()=>{
         AddImages(this.imageData).then(res=>{
@@ -79,6 +91,8 @@ export default {
       const typeArr = ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'];
       const isJPG = typeArr.indexOf(file.raw.type) !== -1;
       const isLt2M = file.size / 1024 / 1024 < 2;
+      // 隐藏上传按钮
+      this.hideUpload = fileList.length >= this.limit
       if (!isJPG) {
         this.$message.error('请选择图片类型的文件!')
       } else if (!isLt2M) {
@@ -96,10 +110,27 @@ export default {
     handleBeforeUpload(file) {
 
     },
+    /** 清空上传文件列表 **/
+    clearUploadList(){
+      this.$refs.imgUpload.clearFiles()
+    }
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.image-upload /deep/ .el-upload--picture-card{
+  height: 80px;
+  width: 80px;
+  line-height: 90px;
+}
+.image-upload /deep/ .el-upload-list__item{
+  height: 80px;
+  width: 80px;
+}
+</style>
+<style>
+.hide .el-upload--picture-card {
+  display: none;
+}
 </style>

@@ -39,6 +39,37 @@ const routes = [
     ]
   },
   {
+    path: '/soft',
+    name: 'Layout',
+    component: Layout,
+    meta: {
+      title: '软件中心',
+      icon:'el-icon-s-cooperation'
+    },
+    children:[
+      {
+        path: "/soft/category",
+        name: "SoftCategory",
+        meta:{
+          keepAlive: true,
+          title: "软件分类",
+          icon: 'el-icon-s-operation'
+        },
+        component: () => import("@/views/Soft/Category")
+      },
+      {
+        path: "/soft/list",
+        name: "SoftList",
+        meta:{
+          keepAlive: true,
+          title: "软件列表",
+          icon: 'el-icon-document'
+        },
+        component: () => import("@/views/Soft/List")
+      },
+    ]
+  },
+  {
     path: '/system',
     name: 'Layout',
     component: Layout,

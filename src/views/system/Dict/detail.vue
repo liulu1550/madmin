@@ -338,7 +338,7 @@ export default {
       this.queryParams.dictType = this.defaultDictType
       this.getList()
     },
-    handleUpdate(row) {
+                                                                             handleUpdate(row) {
       UpdateDictDetailData(row.id||this.ids[0]).then(res=>{
         this.form = res.data
       }).then(()=>{
