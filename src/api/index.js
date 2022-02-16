@@ -183,3 +183,11 @@ export function ListFiles(params){
         params
     })
 }
+// 获取文件上传token
+export function FileToken(params){
+    return service.request({
+        method:'get',
+        url:`/file/token/`,
+        params
+    })
+}

@@ -111,8 +111,7 @@
           :close-on-press-escape="false"
           :show-close="false">
         <div class="upload-picture-container">
-
-          <span>请上传文件大小不超过2M的图片(当前可上传2张)</span>
+          <upload-file ref="uploadFiles" :width="300" v-if="forceRefresh" />
         </div>
         <span slot="footer" class="dialog-footer">
     <el-button type="primary" size="mini" @click="closeUploadDialog">确 定</el-button>
@@ -125,9 +124,13 @@
 
 <script>
 import {ListFiles} from "@/api";
+import uploadFile from "@/components/uploadFile";
 
 export default {
   name: "Files",
+  components:{
+    'upload-file':uploadFile
+  },
   data() {
     return {
       // 表格数据
@@ -146,6 +149,8 @@ export default {
       },
       // 上传dialog显示状态
       uploadVisible:false,
+      // 强制刷新上传组件
+      forceRefresh:false,
     }
   },
   mounted() {
@@ -189,12 +194,16 @@ export default {
     /**点击上传按钮**/
     showUploadDialog() {
       this.$nextTick(()=>{
+        this.forceRefresh = true
         this.uploadVisible = true
       })
+      console.log(new Date().getMonth())
     },
     /**关闭上传dialog之前**/
     closeUploadDialog(){
       this.uploadVisible = false
+      this.forceRefresh = false
+      this.$refs.uploadFiles.clearUploadList()
       this.getList()
     },
   }
