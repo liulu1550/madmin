@@ -8,9 +8,9 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 
 // 引入过滤器
-import filters from "@/utils/filters";
+import * as filters from "@/utils/filters";
 Object.keys(filters).forEach(key=>{
-  Vue.filter(key, filters[key]);
+  Vue.filter(key, filters[key])
 })
 
 new Vue({

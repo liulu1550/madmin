@@ -7,6 +7,8 @@ function ellipsis(value,value_length){
     return value
 }
 
+
 export default {
-    ellipsis
+    ellipsis,
+
 }

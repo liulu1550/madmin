@@ -191,3 +191,38 @@ export function FileToken(params){
         params
     })
 }
+
+// 文件上传成功后的返回值返回给服务器
+export function FileInfo(data){
+    return service.request({
+        method:'post',
+        url:`/file/info/`,
+        data
+    })
+}
+
+// 新增文件
+export function AddFile(data){
+    return service.request({
+        method:'post',
+        url:`/files/`,
+        data
+    })
+}
+
+// 删除文件
+export function DeleteFile(fileId){
+    return service.request({
+        method:'delete',
+        url:`/files/${fileId}/`,
+    })
+}
+
+// 下载文件
+export function DownloadFile(data){
+    return service.request({
+        method:'post',
+        url:`/file/download/`,
+        data
+    })
+}

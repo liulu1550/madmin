@@ -42,10 +42,12 @@
               align="center">
           </el-table-column>
           <el-table-column
-              prop="size"
               label="文件大小"
               header-align="center"
               align="center">
+            <template slot-scope="scope">
+              <div class="text line1">{{ scope.row.size }}</div>
+            </template>
           </el-table-column>
           <el-table-column
               label="文件KEY"
@@ -85,8 +87,13 @@
               header-align="center"
               align="center">
             <template slot-scope="scope">
-              <el-button icon="el-icon-download" size="small" type="text" @click="download(scope.row)">下载</el-button>
-              <el-button icon="el-icon-delete" size="small" type="text" @click="handleDelete(scope.row)">删除</el-button>
+              <el-popconfirm
+                  title="确定要下载此文件吗？"
+                  @confirm="download(scope.row)"
+              >
+              <el-button icon="el-icon-download" size="small" type="text" slot="reference">下载</el-button>
+              </el-popconfirm>
+              <el-button style="margin-left: 10px" icon="el-icon-delete" size="small" type="text" @click="handleDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -111,7 +118,7 @@
           :close-on-press-escape="false"
           :show-close="false">
         <div class="upload-picture-container">
-          <upload-file ref="uploadFiles" :width="300" v-if="forceRefresh" />
+          <upload-file ref="uploadFiles" :width="400" v-if="forceRefresh" />
         </div>
         <span slot="footer" class="dialog-footer">
     <el-button type="primary" size="mini" @click="closeUploadDialog">确 定</el-button>
@@ -125,7 +132,7 @@
 <script>
 import {ListFiles} from "@/api";
 import uploadFile from "@/components/uploadFile";
-
+import {DeleteFile, DownloadFile} from "../../../api";
 export default {
   name: "Files",
   components:{
@@ -186,9 +193,32 @@ export default {
     },
     /**点击下载按钮**/
     download(row) {
+      DownloadFile(row).then(res=>{
+        window.open(res.data.url)
+      })
     },
     /**点击删除按钮**/
     handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$confirm(`是否确认删除文件编号为'${ids}'的数据项吗？`,"警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(()=>{
+        if(ids instanceof Array) {
+          for (var i = 0; i < ids.length; i++) {
+            DeleteFile(ids[i]).then(res => {
+              this.$message.success('删除成功')
+              this.getList();
+            })
+          }
+        }else {
+          DeleteFile(ids).then(res=>{
+            this.$message.success('删除成功')
+            this.getList()
+          })
+        }
+      })
     },
 
     /**点击上传按钮**/
@@ -197,7 +227,6 @@ export default {
         this.forceRefresh = true
         this.uploadVisible = true
       })
-      console.log(new Date().getMonth())
     },
     /**关闭上传dialog之前**/
     closeUploadDialog(){
