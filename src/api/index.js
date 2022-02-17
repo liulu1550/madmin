@@ -246,6 +246,14 @@ export function GetSoftList(params){
     })
 }
 
+// 获取软件详情
+export function GetSoftDetail(softId){
+    return service.request({
+        method:'get',
+        url:`/soft/list/${softId}/`,
+    })
+}
+
 // 添加软件
 export function AddSoft(data){
     return service.request({

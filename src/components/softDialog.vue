@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" :title="dialogTitle" :visible.sync="visible">
+  <el-dialog v-bind="$attrs" v-on="$listeners" :close-on-click-modal="false" :show-close="false" :title="dialogTitle" :visible.sync="visible">
     <el-form ref="addSoftForm" :model="addSoftForm" :rules="addSoftRules" size="small" label-width="80px">
       <el-form-item label="软件名称" prop="name">
         <el-input v-model="addSoftForm.name" placeholder="请输入软件名称" clearable :style="{width: '100%'}">
@@ -13,24 +13,24 @@
         <el-switch v-model="addSoftForm.status" active-text="开启" inactive-text="关闭"></el-switch>
       </el-form-item>
       <el-form-item label="软件图标" prop="icon" required>
-        <upload-icon ref="uploadIcon" :limit="1" @upload-image-data-list="uploadIconData" @remove-data-list="removeIconData"/>
+        <upload-icon ref="uploadIcon" v-if="forceRefresh"  :limit="1" @upload-image-data-list="uploadIconData" @remove-data-list="removeIconData"/>
       </el-form-item>
       <el-form-item label="缩略图" prop="images">
-        <upload-images ref="uploadImages" :limit="3" @upload-image-data-list="uploadImagesData" @remove-data-list="removeImagesData" />
+        <upload-images ref="uploadImages" v-if="forceRefresh" :limit="3" @upload-image-data-list="uploadImagesData" @remove-data-list="removeImagesData" />
       </el-form-item>
       <el-form-item label="软件简介" prop="remark">
         <el-input v-model="addSoftForm.remark" type="textarea" placeholder="请输入软件简介" :maxlength="128"
                   :autosize="{minRows: 2, maxRows: 2}" :style="{width: '100%'}"></el-input>
       </el-form-item>
       <el-form-item label="下载数量" prop="download_num">
-        <el-input-number v-model="addSoftForm.download_num" placeholder="下载数量" :step='1'></el-input-number>
+        <el-input-number v-model="addSoftForm.download_num" placeholder="下载数量" :step='1' :min="0"></el-input-number>
       </el-form-item>
       <el-form-item label="评论数量" prop="comment_num">
-        <el-input-number v-model="addSoftForm.comment_num" placeholder="评论数量" :step='1'></el-input-number>
+        <el-input-number v-model="addSoftForm.comment_num" placeholder="评论数量" :step='1' :min="0"></el-input-number>
       </el-form-item>
     </el-form>
     <div slot="footer">
-      <el-button @click="close" size="small">取消</el-button>
+      <el-button @click="close('cancel')" size="small">取消</el-button>
       <el-button type="primary" size="small" @click="handelConfirm">确定</el-button>
     </div>
   </el-dialog>
@@ -40,6 +40,7 @@
 <script>
 import {ListSoftCategory} from "@/api";
 import uploadPicture from "@/components/uploadPicture";
+import {AddSoft, GetSoftDetail} from "../api";
 
 export default {
   name: "softDialog",
@@ -55,6 +56,14 @@ export default {
     'dialogTitle':{
       type:String,
       default:''
+    },
+    'softId':{
+      type:Number,
+      default:null
+    },
+    'isEdit':{
+      type:Boolean,
+      default:false
     }
   },
   data(){
@@ -66,8 +75,8 @@ export default {
         icon:'',
         images:[],
         remark: undefined,
-        download_num: undefined,
-        comment_num: undefined,
+        download_num: 0,
+        comment_num: 0,
       },
       addSoftRules: {
         name: [{
@@ -96,23 +105,63 @@ export default {
         "value": "id",
         "children": "sub_cat"
       },
+      forceRefresh:false
     }
   },
   created() {
     this.getCategoryOptions()
   },
-  methods: {
-    onOpen() {},
-    onClose() {
-      this.$refs['addSoftForm'].resetFields()
+  watch:{
+    visible:function (val){
+      if(val){
+        this.$nextTick(()=>{
+          this.forceRefresh = true
+        })
+      }else {
+        this.$nextTick(()=>{
+          this.forceRefresh = false
+        })
+      }
     },
-    close() {
-      this.$emit('update:visible', false)
+    isEdit:function (val){
+      console.log(val)
+    },
+    softId:function (val){
+      if (val){
+        this.getSoftDetail()
+      }else{
+
+      }
+    }
+
+  },
+  methods: {
+    // 获取软件详情
+    getSoftDetail(){
+      GetSoftDetail(this.softId).then(res=>{
+        this.addSoftForm = res.data
+        console.log(res)
+      })
+    },
+    close(data) {
+      this.$refs['addSoftForm'].resetFields()
+      this.$refs.uploadIcon.clearUploadList()
+      this.$refs.uploadImages.clearUploadList()
+      this.$emit('soft-dialog-close', data)
     },
     handelConfirm() {
       this.$refs['addSoftForm'].validate(valid => {
         if (valid){
-          console.log(this.addSoftForm)
+          if(!this.isEdit){
+            AddSoft(this.addSoftForm).then(res=>{
+              console.log(res)
+              this.$message.success('软件添加成功')
+            }).then(()=>{
+              this.close()
+            })
+          }else{
+            console.log('是修改')
+          }
         }
       })
     },

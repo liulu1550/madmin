@@ -229,6 +229,7 @@ export default {
     /**修改分页条目数**/
     handleSizeChange(val) {
       this.queryParams.pageSize = val
+      this.queryParams.pageNum = 1
       this.getImagesList()
     },
     /**过滤项提交**/
