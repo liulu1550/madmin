@@ -35,7 +35,7 @@ export default {
     width:{
       type:Number,
       default:200
-    }
+    },
   },
   data(){
     return{
@@ -59,6 +59,8 @@ export default {
       deleteIcon:false,
       // 上传文件的ID
       fileId:undefined,
+      // 服务器保存成功的文件
+      fileInfo:{},
     }
   },
   methods:{
@@ -76,6 +78,7 @@ export default {
         DeleteFile(this.fileId).then(res=>{
           this.uploadBtnVisible = true
           this.clearUploadList()
+          this.$emit('upload-file-data', {})
         }).catch(err=>{
           this.$message.error('删除失败')
         })
@@ -131,6 +134,8 @@ export default {
       }).then(()=>{
         AddFile(this.fileData).then(res=>{
           this.fileId = res.data.id
+          this.fileInfo = res.data
+          this.$emit('upload-file-data', res.data)
         })
       })
     },
@@ -157,6 +162,7 @@ export default {
       this.uploadData = {
         token:'',
       }
+      this.fileInfo = {}
     }
   }
 }

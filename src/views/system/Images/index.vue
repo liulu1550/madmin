@@ -152,7 +152,7 @@
           :close-on-press-escape="false"
           :show-close="false">
         <div class="upload-picture-container">
-          <upload-picture ref="uploadPicture" v-if="forceRefresh" :limit="2" />
+          <upload-picture ref="uploadPicture" v-if="forceRefresh" :limit="2" @upload-image-data-list="uploadImageDataList" @remove-data-list="removeUploadDataList"/>
           <span>请上传文件大小不超过2M的图片(当前可上传2张)</span>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -196,6 +196,8 @@ export default {
       uploadVisible: false,
       // 强制刷新上传组件
       forceRefresh:false,
+      // 上传的图片列表
+      uploadImageListData:[]
     }
   },
   mounted() {
@@ -284,6 +286,18 @@ export default {
               })
             }
       })
+    },
+    /**获取上传的图片列表**/
+    removeUploadDataList(data){
+      for(var i=0; i<this.uploadImageListData.length;i++){
+        if(data.id===this.uploadImageListData[i].id){
+            this.uploadImageListData.splice(i,1)
+        }
+      }
+    },
+    /**获取上传的图片列表**/
+    uploadImageDataList(dataList){
+      this.uploadImageListData.push(dataList)
     },
     /**点击下载按钮**/
     download(data){

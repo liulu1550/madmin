@@ -66,6 +66,8 @@ export default {
       GetImagesList({'key':file.response.key}).then(res=>{
         const imageId = res.data.results[0].id
         DeleteImages(imageId).then(res=>{
+        }).then(()=>{
+          this.$emit('remove-data-list',res.data.results[0])
         })
       })
       // 显示上传按钮
@@ -82,7 +84,7 @@ export default {
         this.imageData.oss_url = 'https://ossimg.wouldmissyou.com/'+file.key
       }).then(()=>{
         AddImages(this.imageData).then(res=>{
-
+          this.$emit('upload-image-data-list', res.data)
         })
       })
     },

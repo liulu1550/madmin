@@ -6,7 +6,7 @@
       <div class="logo-text" :style="{'display':siteNameShow}">More管理系统</div>
     </div>
     <div class="nav-container">
-      <el-menu background-color="#304156FF" text-color="#BFCBD9FF" :default-active="defaultActive" :collapse="isCollapse" @select="handleSelect">
+      <el-menu :unique-opened="true" background-color="#304156FF" text-color="#BFCBD9FF" :default-active="defaultActive" :collapse="isCollapse" @select="handleSelect">
         <template v-for="(item, index) in routers">
           <template v-if="!item.meta.hidden">
             <template v-if="item.children.length >1">
