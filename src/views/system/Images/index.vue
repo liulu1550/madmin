@@ -277,12 +277,18 @@ export default {
                 DeleteImages(ids[i]).then(res => {
                   this.$message.success('删除成功')
                   this.getImagesList();
+                }).catch(err=>{
+                  this.$message.error('删除失败！该数据或与其他相关数据绑定')
+                  this.getImagesList();
                 })
               }
             }else {
               DeleteImages(ids).then(res=>{
                 this.$message.success('删除成功')
                 this.getImagesList()
+              }).catch(err=>{
+                this.$message.error('删除失败！该数据或与其他相关数据绑定')
+                this.getImagesList();
               })
             }
       })

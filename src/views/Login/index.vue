@@ -54,14 +54,21 @@ export default {
       this.$refs['elForm'].validate((valid) => {
         if (valid) {
           Login(this.formData).then(res=>{
-            this.loginLoading = false
-            this.$message.success('欢迎回来~')
-            setToken(res.token)
-            this.$store.commit('app/SET_TOKEN',res.token)
-            this.getUserInfo()
+            if (res.code ===2000){
+              this.loginLoading = false
+              this.$message.success('欢迎回来~')
+              setToken(res.token)
+              this.$store.commit('app/SET_TOKEN',res.token)
+              this.getUserInfo()
+            }else {
+              this.loginLoading = false
+              this.$message.error('用户名或密码错误')
+            }
           }).catch(err=>{
+            console.log(err)
             this.loginLoading = false
-            this.$message.error('用户名或密码错误')
+            this.$message.error(err.data.msg)
+
           })
         } else {
           this.loginLoading = false

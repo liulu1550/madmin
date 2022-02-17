@@ -143,37 +143,6 @@ export function DetailImages(imageId){
 }
 
 
-// 软件分类列表
-export function ListSoftCategory(params){
-    return service.request({
-        method:'get',
-        url:`/soft/category`,
-        params
-    })
-}
-// 删除软件分类
-export function DeleteSoftCategory(cId){
-    return service.request({
-        method:'delete',
-        url:`/soft/category/${cId}/`,
-    })
-}
-// 新增软件分类
-export function AddSoftCategory(data){
-    return service.request({
-        method:'post',
-        url:`/soft/category/`,
-        data
-    })
-}
-// 修改软件分类
-export function UpdateSoftCategory(data){
-    return service.request({
-        method:'put',
-        url:`/soft/category/${data.id}/`,
-        data
-    })
-}
 
 // 文件列表
 export function ListFiles(params){
@@ -224,5 +193,71 @@ export function DownloadFile(data){
         method:'post',
         url:`/file/download/`,
         data
+    })
+}
+
+
+
+// 软件分类列表
+export function ListSoftCategory(params){
+    return service.request({
+        method:'get',
+        url:`/soft/category`,
+        params
+    })
+}
+// 删除软件分类
+export function DeleteSoftCategory(cId){
+    return service.request({
+        method:'delete',
+        url:`/soft/category/${cId}/`,
+    })
+}
+// 新增软件分类
+export function AddSoftCategory(data){
+    return service.request({
+        method:'post',
+        url:`/soft/category/`,
+        data
+    })
+}
+// 修改软件分类
+export function UpdateSoftCategory(data){
+    return service.request({
+        method:'put',
+        url:`/soft/category/${data.id}/`,
+        data
+    })
+}
+// 软件分类详情
+export function DetailSoftCategory(categoryId){
+    return service.request({
+        method:'get',
+        url:`/soft/category/${categoryId}/`,
+    })
+}
+
+// 获取软件列表
+export function GetSoftList(params){
+    return service.request({
+        method:'get',
+        url:`/soft/list/`,
+        params
+    })
+}
+
+// 添加软件
+export function AddSoft(data){
+    return service.request({
+        method:'post',
+        url:`/soft/list/`,
+        data
+    })
+}
+// 删除软件
+export function DeleteSoft(softId){
+    return service.request({
+        method:'delete',
+        url:`/soft/list/${softId}/`,
     })
 }
