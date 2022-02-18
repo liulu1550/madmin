@@ -95,7 +95,7 @@
         <el-button type="primary" size="small" @click="handelClose">确定</el-button>
       </div>
     </el-dialog>
-    <soft-version-detail-dialog :soft-id="softId" :version-detail-id="versionDetailId" :soft-version-dialog-visible="softVersionDetailVisible" @close-soft-version-detail-dialog="handleCloseAddVersionDialog"/>
+    <soft-version-detail-dialog :soft-id="softId" :is-edit="isEdit" :detail-id="detailId" :soft-version-dialog-visible="softVersionDetailVisible" @close-soft-version-detail-dialog="handleCloseAddVersionDialog"/>
   </div>
 </template>
 
@@ -133,7 +133,8 @@ export default {
       // 修改状态
       single: true,
       softVersionDetailVisible:false,
-      versionDetailId:null,
+      isEdit:false,
+      detailId:null,
     }
   },
   watch:{
@@ -160,6 +161,8 @@ export default {
     /**关闭详情dialog**/
     handleCloseAddVersionDialog(){
       this.softVersionDetailVisible = false
+      this.isEdit = false
+      this.detailId = null
       this.getList()
     },
     /**关闭dialog**/
@@ -169,10 +172,14 @@ export default {
     },
     /**修改**/
     handleEdit(row){
-      console.log(row)
       const ids = row.id || this.ids[0];
+      if (row){
+        this.isEdit = true
+        this.detailId = ids
+      }else {
+        this.isEdit = false
+      }
       this.softVersionDetailVisible = true
-      this.versionDetailId = ids
     },
     /**删除**/
     handelDelete(row){

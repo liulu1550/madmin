@@ -61,7 +61,11 @@ export default {
       type: Number,
       default: null
     },
-    'versionDetailId':{
+    isEdit:{
+      type:Boolean,
+      default:false
+    },
+    detailId:{
       type: Number,
       default: null
     }
@@ -77,16 +81,14 @@ export default {
       }
     },
     softId:function (val){
-      console.log(val)
       if(val){
-        this.getPlatform()
+        // this.getPlatform()
       }
     },
-    versionDetailId:function (val){
-      if(val){
-        this.detailId = val
-        this.getDetailSoftVersion(this.detailId)
-      }else {}
+    isEdit:function (val){
+      if (val){
+        this.getVersionDetail()
+      }
     },
     'addVersionForm.platform':function (val){
       if (val===15){
@@ -155,15 +157,17 @@ export default {
       languageOptions: [],
       need_payOptions: [{
         "label": "否",
-        "value": 0
+        "value": false
       }, {
         "label": "是",
-        "value": 1
+        "value": true
       }],
       // 强制刷新上传组件
       forceRefresh: false,
-      detailId:null,
     }
+  },
+  created() {
+    this.getPlatform()
   },
   methods: {
     getPlatform(){
@@ -184,16 +188,19 @@ export default {
       this.fileData = data
       this.addVersionForm['oss_url'] = this.fileData.id
     },
-    /**获取版本详情**/
-    getDetailSoftVersion(val){
-      DetailSoftVersion(val).then(res=>{
-        this.addVersionForm = res.data
+    getVersionDetail(){
+      DetailSoftVersion(this.detailId).then(res=>{
+        console.log(res)
+       this.addVersionForm.version_num = res.data.version_num
+        this.addVersionForm.platform = res.data.platform
+        this.addVersionForm.platform_version = res.data.platform_version
+        this.addVersionForm.language = res.data.language
+        this.addVersionForm.need_pay = res.data.need_pay
       })
     },
     /**关闭dialog**/
     handelClose(){
       this.fileData = {}
-      this.detailId = null
       this.forceRefresh = false
       this.$refs.uploadFiles.clearUploadList()
       this.$refs['addVersionForm'].resetFields()
