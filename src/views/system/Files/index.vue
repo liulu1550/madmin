@@ -253,11 +253,17 @@ export default {
             DeleteFile(ids[i]).then(res => {
               this.$message.success('删除成功')
               this.getList();
+            }).catch(err=>{
+             this.$message.error(err.data.msg)
+              this.getList()
             })
           }
         } else {
           DeleteFile(ids).then(res => {
             this.$message.success('删除成功')
+            this.getList()
+          }).catch(err=>{
+            this.$message.error(err.data.msg)
             this.getList()
           })
         }

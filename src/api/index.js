@@ -269,3 +269,45 @@ export function DeleteSoft(softId){
         url:`/soft/list/${softId}/`,
     })
 }
+
+// 更新软件
+export function UpdateSoft(data){
+    return service.request({
+        method:'put',
+        url:`/soft/list/${data.id}/`,
+        data
+    })
+}
+
+// 软件版本列表
+export function SoftVersionList(params){
+    return service.request({
+        method:'get',
+        url:`soft/version/`,
+        params
+    })
+}
+
+// 添加软件版本
+export function AddSoftVersion(data){
+    return service.request({
+        method:'post',
+        url:`soft/version/`,
+        data
+    })
+}
+
+// 删除软件版本
+export function DeleteSoftVersion(versionId){
+    return service.request({
+        method:'delete',
+        url:`soft/version/${versionId}/`,
+    })
+}
+// 软件版本详情
+export function DetailSoftVersion(versionId){
+    return service.request({
+        method:'get',
+        url:`soft/version/${versionId}/`,
+    })
+}

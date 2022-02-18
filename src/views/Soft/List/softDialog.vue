@@ -13,10 +13,10 @@
         <el-switch v-model="addSoftForm.status" active-text="开启" inactive-text="关闭"></el-switch>
       </el-form-item>
       <el-form-item label="软件图标" prop="icon" required>
-        <upload-icon ref="uploadIcon" v-if="forceRefresh"  :limit="1" @upload-image-data-list="uploadIconData" @remove-data-list="removeIconData"/>
+        <upload-icon ref="uploadIcon" v-if="forceRefresh" :img-list="iconIdList"  :limit="1" @upload-image-data-list="uploadIconData" @remove-data-list="removeIconData"/>
       </el-form-item>
       <el-form-item label="缩略图" prop="images">
-        <upload-images ref="uploadImages" v-if="forceRefresh" :limit="3" @upload-image-data-list="uploadImagesData" @remove-data-list="removeImagesData" />
+        <upload-images ref="uploadImages" v-if="forceRefresh" :img-list="imagesIdList" :limit="3" @upload-image-data-list="uploadImagesData" @remove-data-list="removeImagesData" />
       </el-form-item>
       <el-form-item label="软件简介" prop="remark">
         <el-input v-model="addSoftForm.remark" type="textarea" placeholder="请输入软件简介" :maxlength="128"
@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import {ListSoftCategory} from "@/api";
+import {ListSoftCategory, UpdateSoft} from "@/api";
 import uploadPicture from "@/components/uploadPicture";
-import {AddSoft, GetSoftDetail} from "../api";
+import {AddSoft, GetSoftDetail} from "@/api";
 
 export default {
   name: "softDialog",
@@ -105,7 +105,9 @@ export default {
         "value": "id",
         "children": "sub_cat"
       },
-      forceRefresh:false
+      forceRefresh:false,
+      iconIdList:[],
+      imagesIdList:[],
     }
   },
   created() {
@@ -124,7 +126,7 @@ export default {
       }
     },
     isEdit:function (val){
-      console.log(val)
+
     },
     softId:function (val){
       if (val){
@@ -140,13 +142,18 @@ export default {
     getSoftDetail(){
       GetSoftDetail(this.softId).then(res=>{
         this.addSoftForm = res.data
-        console.log(res)
+        this.iconIdList.push(res.data.icon)
+        for(var i=0;i<res.data.images.length;i++){
+          this.imagesIdList.push(res.data.images[i])
+        }
       })
     },
     close(data) {
       this.$refs['addSoftForm'].resetFields()
       this.$refs.uploadIcon.clearUploadList()
       this.$refs.uploadImages.clearUploadList()
+      this.iconIdList = []
+      this.imagesIdList = []
       this.$emit('soft-dialog-close', data)
     },
     handelConfirm() {
@@ -154,13 +161,16 @@ export default {
         if (valid){
           if(!this.isEdit){
             AddSoft(this.addSoftForm).then(res=>{
-              console.log(res)
               this.$message.success('软件添加成功')
             }).then(()=>{
               this.close()
             })
           }else{
-            console.log('是修改')
+            UpdateSoft(this.addSoftForm).then(res=>{
+              this.$message.success('软件修改成功')
+            }).then(()=>{
+              this.close()
+            })
           }
         }
       })

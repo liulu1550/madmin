@@ -89,7 +89,7 @@
           align="center">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="small" type="text" @click="handleEdit(scope.row)">修改</el-button>
-          <el-button icon="el-icon-s-operation" size="small" type="text" @click="handleEdit(scope.row)">版本管理</el-button>
+          <el-button icon="el-icon-s-operation" size="small" type="text" @click="showSoftVersion(scope.row)">版本管理</el-button>
           <el-button icon="el-icon-delete" size="small" type="text" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -109,17 +109,22 @@
   <div class="soft-dialog-container">
     <soft-dialog :soft-id="editSoftId" :is-edit="isEdit" :dialog-title="addDialogTitle" :visible.sync="softDialogVisible" @soft-dialog-close="softDialogClose" />
   </div>
+  <div class="soft-version-list-container">
+    <soft-version-list :soft-id="softId" :soft-version-visible="softVersionVisible" @close-soft-version-dialog="softVersionClose"/>
+  </div>
 </div>
 </template>
 
 <script>
-import softDialog from "@/components/softDialog";
-import {DeleteSoft, GetSoftList} from "../../../api";
+import softDialog from "@/views/Soft/List/softDialog";
+import {DeleteSoft, GetSoftList} from "@/api";
+import softVersionList from "@/views/Soft/List/softVersionList";
 
 export default {
   name:'SoftList',
   components:{
-    'soft-dialog':softDialog
+    'soft-dialog':softDialog,
+    'soft-version-list':softVersionList
   },
   data(){
     return{
@@ -146,6 +151,10 @@ export default {
       softDialogVisible:false,
       // 修改软件时传到子组件的id
       editSoftId:null,
+      // 软件版本列表显示状态
+      softVersionVisible:false,
+      // 显示版本管理传到子组件的ID
+      softId:null,
     }
   },
   mounted() {
@@ -195,7 +204,6 @@ export default {
     },
     /**softDialog关闭时的时间**/
     softDialogClose(data){
-      console.log(data)
       this.softDialogVisible = false
       this.isEdit = false
       this.addDialogTitle = '添加软件'
@@ -233,7 +241,17 @@ export default {
             this.getList();
           })
         }
-      })
+      }).catch(()=>{})
+    },
+    /**点击版本管理**/
+    showSoftVersion(row){
+      this.softId = row.id
+      this.softVersionVisible = true
+    },
+    /**关闭版本管理**/
+    softVersionClose(){
+      this.softId = null
+      this.softVersionVisible = false
     },
     /**表格头背景颜色**/
     rowClass() {
@@ -241,4 +259,5 @@ export default {
     },
   }
 }
+
 </script>
