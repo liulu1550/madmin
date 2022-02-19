@@ -311,3 +311,54 @@ export function DetailSoftVersion(versionId){
         url:`soft/version/${versionId}/`,
     })
 }
+
+// 文章分类
+export function ListArticleCategory(params){
+    return service.request({
+        method:'get',
+        url:`/article/category/`,
+        params
+    })
+}
+
+// 删除文章分类
+export function DeleteArticleCategory(categoryId){
+    return service.request({
+        method:'delete',
+        url:`/article/category/${categoryId}/`,
+    })
+}
+
+// 添加文章分类
+export function AddArticleCategory(data){
+    return service.request({
+        method:'post',
+        url:`/article/category/`,
+        data
+    })
+}
+// 更新文章分类
+
+export function UpdateArticleCategory(data){
+    return service.request({
+        method:'put',
+        url:`/article/category/${data.id}/`,
+        data
+    })
+}
+// 文章分类详情
+
+export function DetailArticleCategory(categoryId){
+    return service.request({
+        method:'get',
+        url:`/article/category/${categoryId}/`,
+    })
+}
+// 文章列表
+export function ListArticle(params){
+    return service.request({
+        method:"get",
+        url:`/article/list/`,
+        params
+    })
+}

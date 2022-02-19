@@ -39,6 +39,57 @@ const routes = [
     ]
   },
   {
+    path:'/article',
+    name:'Layout',
+    component: Layout,
+    meta:{
+      title:'文章管理',
+      icon:'el-icon-s-order'
+    },
+    children: [
+      {
+        path: "/article/category",
+        name: "ArticleCategoryList",
+        meta:{
+          keepAlive: true,
+          title: "文章分类",
+          icon: 'el-icon-s-operation'
+        },
+        component: () => import("@/views/Article/Category")
+      },
+      {
+        path: "/article/list",
+        name: "ArticleList",
+        meta:{
+          keepAlive: true,
+          title: "文章列表",
+          icon: 'el-icon-document'
+        },
+        component: () => import("@/views/Article/List")
+      },
+      {
+        path: "/article/tags",
+        name: "ArticleTagsList",
+        meta:{
+          keepAlive: true,
+          title: "标签列表",
+          icon: 'el-icon-paperclip'
+        },
+        component: () => import("@/views/Article/Tags")
+      },
+      {
+        path: "/article/comments",
+        name: "ArticleCommentList",
+        meta:{
+          keepAlive: true,
+          title: "评论列表",
+          icon: 'el-icon-chat-dot-round'
+        },
+        component: () => import("@/views/Article/Comment")
+      },
+    ]
+  },
+  {
     path: '/soft',
     name: 'Layout',
     component: Layout,
@@ -67,6 +118,37 @@ const routes = [
         },
         component: () => import("@/views/Soft/List")
       },
+    ]
+  },
+  {
+    path: '/users',
+    name: 'Layout',
+    component: Layout,
+    meta: {
+      title: '用户管理',
+      icon:'el-icon-user-solid'
+    },
+    children: [
+      {
+        path: "/users/list",
+        name: "UsersList",
+        meta: {
+          keepAlive: true,
+          title: "用户列表",
+          icon: 'el-icon-user'
+        },
+        component: () => import("@/views/Users/List")
+      },
+      {
+        path: "/users/operation",
+        name: "UserOperation",
+        meta: {
+          keepAlive: true,
+          title: "用户操作",
+          icon: 'el-icon-set-up'
+        },
+        component: () => import("@/views/Users/Operation")
+      }
     ]
   },
   {

@@ -9,20 +9,20 @@
       <el-form-item label="软件平台" prop="platform">
         <el-select v-model="addVersionForm.platform" placeholder="请选择软件平台" clearable :style="{width: '100%'}">
           <el-option v-for="(item, index) in platformOptions" :key="index" :label="item.dictLabel"
-                     :value="item.id" :disabled="item.disabled"></el-option>
+                     :value="item.id" :disabled="item.status"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="平台版本" prop="platform_version">
         <el-select v-model="addVersionForm.platform_version" placeholder="请选择平台版本" clearable
                    :style="{width: '100%'}">
           <el-option v-for="(item, index) in platform_versionOptions" :key="index" :label="item.dictLabel"
-                     :value="item.id" :disabled="item.disabled"></el-option>
+                     :value="item.id" :disabled="item.status"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="语言" prop="language">
         <el-select v-model="addVersionForm.language" placeholder="请选择语言" clearable :style="{width: '100%'}">
           <el-option v-for="(item, index) in languageOptions" :key="index" :label="item.dictLabel"
-                     :value="item.id" :disabled="item.disabled"></el-option>
+                     :value="item.id" :disabled="item.status"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="文件" prop="oss_url">
@@ -189,14 +189,20 @@ export default {
       this.addVersionForm['oss_url'] = this.fileData.id
     },
     getVersionDetail(){
-      DetailSoftVersion(this.detailId).then(res=>{
-        console.log(res)
-       this.addVersionForm.version_num = res.data.version_num
-        this.addVersionForm.platform = res.data.platform
-        this.addVersionForm.platform_version = res.data.platform_version
-        this.addVersionForm.language = res.data.language
-        this.addVersionForm.need_pay = res.data.need_pay
+      GetDictDetailList({'dict_data':21, 'pageNum':'all'}).then(res=>{
+        this.platformOptions = res.data
+      }).then(()=>{
+        DetailSoftVersion(this.detailId).then(res=>{
+          console.log(res)
+          this.addVersionForm.version_num = res.data.version_num
+          this.addVersionForm.platform = res.data.platform
+          this.addVersionForm.platform_version = res.data.platform_version
+          this.addVersionForm.language = res.data.language
+          this.addVersionForm.need_pay = res.data.need_pay
+        })
       })
+
+
     },
     /**关闭dialog**/
     handelClose(){

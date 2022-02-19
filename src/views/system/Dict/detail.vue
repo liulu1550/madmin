@@ -221,10 +221,10 @@ export default {
       tableLoading: true,
       statusOptions: [{
         "label": "正常",
-        "value": 1
+        "value": true
       }, {
         "label": "停用",
-        "value": 0
+        "value": false
       }],
       typeOptions: [],
       isEdit:false,
@@ -236,7 +236,7 @@ export default {
         dictValue: undefined,
         sort: 0,
         is_default: false,
-        status: 1,
+        status: true,
         remark: undefined,
       },
       rules: {
@@ -265,10 +265,10 @@ export default {
       },
       dialogStatusOptions: [{
         "label": "正常",
-        "value": 1
+        "value": true
       }, {
         "label": "停用",
-        "value": 0
+        "value": false
       }],
     }
   },
@@ -387,7 +387,7 @@ export default {
         dictValue: undefined,
         sort: 0,
         is_default: false,
-        status: 1,
+        status: true,
         remark: undefined,
       }
     },
