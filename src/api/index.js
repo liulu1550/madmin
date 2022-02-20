@@ -362,3 +362,26 @@ export function ListArticle(params){
         params
     })
 }
+// 删除文章
+export function DeleteArticle(articleId){
+    return service.request({
+        method:"delete",
+        url:`/article/list/${articleId}/`,
+    })
+}
+// 文章标签列表
+export function ListArticleTags(params){
+    return service.request({
+        method:"get",
+        url:`/article/tags/`,
+        params
+    })
+}
+// 添加文章标签
+export function AddArticleTags(data){
+    return service.request({
+        method:"post",
+        url:`/article/tags/`,
+        data
+    })
+}
