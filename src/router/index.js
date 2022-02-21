@@ -68,6 +68,17 @@ const routes = [
         component: () => import("@/views/Article/List")
       },
       {
+        path: "/article/detail",
+        name: "ArticleDetail",
+        meta:{
+          keepAlive: false,
+          title: "文章详情",
+          icon: 'el-icon-document',
+          hidden: true
+        },
+        component: () => import("@/views/Article/List/detail")
+      },
+      {
         path: "/article/tags",
         name: "ArticleTagsList",
         meta:{

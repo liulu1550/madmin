@@ -103,6 +103,7 @@ export function GetImagesToken(){
         url:`/img/token/`,
     })
 }
+
 // 图片上传成功后的返回值返回给服务器
 export function ImagesInfo(data){
     return service.request({
@@ -369,6 +370,14 @@ export function DeleteArticle(articleId){
         url:`/article/list/${articleId}/`,
     })
 }
+// 添加文章
+export function AddArticle(data){
+    return service.request({
+        method:"post",
+        url:`/article/list/`,
+        data
+    })
+}
 // 文章标签列表
 export function ListArticleTags(params){
     return service.request({
@@ -382,6 +391,16 @@ export function AddArticleTags(data){
     return service.request({
         method:"post",
         url:`/article/tags/`,
+        data
+    })
+}
+
+// 创建文章内容
+
+export function AddArticleContent(data){
+    return service.request({
+        method:"post",
+        url:`/article/content/`,
         data
     })
 }

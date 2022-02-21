@@ -114,6 +114,7 @@ export default {
         this.imageData.oss_url = 'https://ossimg.wouldmissyou.com/'+file.key
       }).then(()=>{
         AddImages(this.imageData).then(res=>{
+          // console.log(res)
           this.$emit('upload-image-data-list', res.data)
         })
       })
